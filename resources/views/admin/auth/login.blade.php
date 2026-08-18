@@ -59,7 +59,7 @@
                         <label class="block text-[13px] font-bold text-slate-700 mb-2">Alamat Email</label>
                         <div class="relative group">
                             <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-primary transition-colors"></i>
-                            <input type="email" name="email" value="{{ old('email') }}" required autofocus placeholder="admin@bakesbangpol.go.id"
+                            <input type="email" name="email" value="{{ old('email') }}" required autofocus placeholder="Masukkan alamat email"
                                    class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-[14px] font-medium placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all duration-200">
                         </div>
                     </div>
@@ -69,8 +69,11 @@
                         </div>
                         <div class="relative group">
                             <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-primary transition-colors"></i>
-                            <input type="password" name="password" required placeholder="••••••••"
-                                   class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-[14px] font-medium placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all duration-200">
+                            <input type="password" id="password" name="password" required placeholder="••••••••"
+                                   class="w-full pl-11 pr-12 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-[14px] font-medium placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all duration-200">
+                            <button type="button" onclick="togglePasswordVisibility('password', 'password_icon')" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none z-10">
+                                <i id="password_icon" data-lucide="eye" class="w-5 h-5"></i>
+                            </button>
                         </div>
                     </div>
                     
@@ -96,6 +99,24 @@
         &copy; {{ date('Y') }} Badan Kesatuan Bangsa dan Politik Kabupaten Banyuwangi.
     </footer>
 
-    <script>lucide.createIcons();</script>
+    <script>
+        lucide.createIcons();
+
+        function togglePasswordVisibility(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                input.type = 'password';
+                icon.setAttribute('data-lucide', 'eye');
+            }
+            
+            // Re-initialize Lucide icons for the updated icon element
+            lucide.createIcons();
+        }
+    </script>
 </body>
 </html>

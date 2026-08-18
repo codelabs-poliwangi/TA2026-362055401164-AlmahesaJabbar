@@ -69,7 +69,8 @@
             <div class="space-y-2 md:col-span-2 max-w-md">
                 <label for="status" class="text-[13px] font-bold text-slate-700 uppercase tracking-wider block">Status Publikasi</label>
                 <select name="status" id="status" required
-                        class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-[14px] font-medium text-slate-700 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none shadow-sm @error('status') border-red-500 @enderror">
+                        class="w-full px-4 py-3 bg-white border border-
+                        slate-200 rounded-xl text-[14px] font-medium text-slate-700 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none shadow-sm @error('status') border-red-500 @enderror">
                     <option value="draft" {{ old('status', $video->status) == 'draft' ? 'selected' : '' }}>Draft (Sembunyikan)</option>
                     <option value="published" {{ old('status', $video->status) == 'published' ? 'selected' : '' }}>Published (Publikasikan)</option>
                 </select>

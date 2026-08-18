@@ -21,12 +21,41 @@ class HalamanController extends Controller
 
     public function update(Request $request, Halaman $halaman)
     {
-        $request->validate([
-            'judul_halaman' => 'required|max:100',
-            'isi_konten'    => 'required',
-        ]);
+        if ($halaman->slug === 'struktur-organisasi') {
+            $request->validate([
+                'judul_halaman' => 'required|max:100',
+                'gambar'        => $halaman->gambar ? 'nullable|safe_image|image|mimes:jpeg,png,jpg,webp|max:2048' : 'required|safe_image|image|mimes:jpeg,png,jpg,webp|max:2048',
+                'isi_konten'    => 'nullable',
+            ], [
+                'judul_halaman.required' => 'Judul halaman wajib diisi.',
+                'gambar.required'        => 'Gambar struktur organisasi wajib diisi.',
+                'gambar.image'           => 'File yang diupload harus berupa gambar.',
+                'gambar.max'             => 'Ukuran gambar maksimal adalah 2MB.',
+            ]);
 
-        $halaman->update($request->only('judul_halaman', 'isi_konten'));
+            $data = $request->only('judul_halaman', 'isi_konten');
+            $data['isi_konten'] = \App\Helpers\SecurityHelper::sanitizeHtml($data['isi_konten'] ?? '');
+
+            if ($request->hasFile('gambar')) {
+                if ($halaman->gambar && \Illuminate\Support\Facades\Storage::disk('public')->exists($halaman->gambar)) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($halaman->gambar);
+                }
+                $data['gambar'] = $request->file('gambar')->store('halaman', 'public');
+            }
+
+            $halaman->update($data);
+        } else {
+            $request->validate([
+                'judul_halaman' => 'required|max:100',
+                'isi_konten'    => 'required',
+            ]);
+
+            $data = $request->only('judul_halaman', 'isi_konten');
+            $data['isi_konten'] = \App\Helpers\SecurityHelper::sanitizeHtml($data['isi_konten'] ?? '');
+
+            $halaman->update($data);
+        }
+
         return redirect()->route('admin.halaman.index')->with('success', 'Halaman berhasil diperbarui.');
     }
 

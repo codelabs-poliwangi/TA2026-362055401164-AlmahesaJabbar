@@ -45,7 +45,7 @@ class PimpinanController extends Controller
             'nama'            => 'required|string|max:100',
             'jabatan'         => 'required|string|max:100',
             'tupoksi_singkat' => 'nullable|string',
-            'foto'            => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'foto'            => 'nullable|safe_image|image|mimes:jpeg,png,jpg,webp|max:2048',
             'bio'             => 'nullable|string',
             'anggota'         => 'nullable|string',
             'urutan'          => 'required|integer|min:0',
@@ -59,6 +59,7 @@ class PimpinanController extends Controller
         ]);
 
         $data = $request->except('foto');
+        $data['bio'] = \App\Helpers\SecurityHelper::sanitizeHtml($request->bio);
         $data['created_by'] = Auth::id();
 
         if ($request->hasFile('foto')) {
@@ -96,7 +97,7 @@ class PimpinanController extends Controller
             'nama'            => 'required|string|max:100',
             'jabatan'         => 'required|string|max:100',
             'tupoksi_singkat' => 'nullable|string',
-            'foto'            => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'foto'            => 'nullable|safe_image|image|mimes:jpeg,png,jpg,webp|max:2048',
             'bio'             => 'nullable|string',
             'anggota'         => 'nullable|string',
             'urutan'          => 'required|integer|min:0',
@@ -110,6 +111,7 @@ class PimpinanController extends Controller
         ]);
 
         $data = $request->except('foto');
+        $data['bio'] = \App\Helpers\SecurityHelper::sanitizeHtml($request->bio);
 
         if ($request->hasFile('foto')) {
             // Hapus foto lama jika ada dan bukan gambar dummy penting

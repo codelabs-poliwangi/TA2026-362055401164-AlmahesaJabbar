@@ -38,12 +38,13 @@ class BeritaController extends Controller
             'judul'           => 'required|max:100',
             'isi'             => 'required',
             'kategori_id'     => 'required|exists:kategori_berita,id',
-            'gambar'          => 'nullable|image|max:2048',
+            'gambar'          => 'nullable|safe_image|image|max:2048',
             'tanggal_publish' => 'nullable|date',
             'status'          => 'required|in:draft,published',
         ]);
 
         $data = $request->except('gambar');
+        $data['isi'] = \App\Helpers\SecurityHelper::sanitizeHtml($request->isi);
         $data['slug'] = $this->uniqueSlug($request->judul);
         $data['created_by'] = Auth::id();
 
@@ -67,12 +68,13 @@ class BeritaController extends Controller
             'judul'           => 'required|max:100',
             'isi'             => 'required',
             'kategori_id'     => 'required|exists:kategori_berita,id',
-            'gambar'          => 'nullable|image|max:2048',
+            'gambar'          => 'nullable|safe_image|image|max:2048',
             'tanggal_publish' => 'nullable|date',
             'status'          => 'required|in:draft,published',
         ]);
 
         $data = $request->except('gambar');
+        $data['isi'] = \App\Helpers\SecurityHelper::sanitizeHtml($request->isi);
 
         if ($request->hasFile('gambar')) {
             if ($beritum->gambar) {

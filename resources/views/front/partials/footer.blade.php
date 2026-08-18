@@ -21,7 +21,7 @@
                 </p>
                 <div class="flex items-center gap-3 pt-2">
                     {{-- Facebook --}}
-                    <a href="https://www.facebook.com" target="_blank"
+                    <a href="https://www.facebook.com/profile.php?id=61579344050332" target="_blank"
                         class="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center text-slate-400 hover:bg-[#1877F2] hover:border-[#1877F2] hover:text-white hover:scale-110 transition-all duration-300"
                         title="Facebook">
                         <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -29,7 +29,7 @@
                         </svg>
                     </a>
                     {{-- Instagram --}}
-                    <a href="https://www.instagram.com/bakesbangpolbanyuwangi/" target="_blank"
+                    <a href="https://www.instagram.com/bakesbangpol_banyuwangi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank"
                         class="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center text-slate-400 hover:bg-gradient-to-tr hover:from-[#f9ce34] hover:via-[#ee2a7b] hover:to-[#6228d7] hover:border-transparent hover:text-white hover:scale-110 transition-all duration-300"
                         title="Instagram">
                         <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -37,7 +37,7 @@
                         </svg>
                     </a>
                     {{-- YouTube --}}
-                    <a href="https://www.youtube.com" target="_blank"
+                    <a href="https://www.youtube.com/@BakesbangpolBanyuwangi" target="_blank"
                         class="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center text-slate-400 hover:bg-[#FF0000] hover:border-[#FF0000] hover:text-white hover:scale-110 transition-all duration-300"
                         title="YouTube">
                         <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

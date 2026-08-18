@@ -32,7 +32,7 @@ class VideoController extends Controller
         $request->validate([
             'judul'        => 'required|max:100',
             'link_video'   => 'required|url|max:255',
-            'gambar_cover' => 'nullable|image|max:2048',
+            'gambar_cover' => 'nullable|safe_image|image|max:2048',
             'status'       => 'required|in:draft,published',
         ]);
 
@@ -58,7 +58,7 @@ class VideoController extends Controller
         $request->validate([
             'judul'        => 'required|max:100',
             'link_video'   => 'required|url|max:255',
-            'gambar_cover' => 'nullable|image|max:2048',
+            'gambar_cover' => 'nullable|safe_image|image|max:2048',
             'status'       => 'required|in:draft,published',
         ]);
 

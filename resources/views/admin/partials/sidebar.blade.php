@@ -35,7 +35,12 @@
                 ['route' => 'admin.faq.index',     'icon' => 'help-circle',     'label' => 'FAQ'],
             ];
 
-            $isKabarTerbaruActive = request()->routeIs('admin.berita.*') || request()->routeIs('admin.video.*');
+            $settingLinks = [
+                ['route' => 'admin.users.index',   'icon' => 'users',           'label' => 'Kelola Admin'],
+                ['route' => 'admin.profile.edit',  'icon' => 'user-cog',        'label' => 'Profil Saya'],
+            ];
+
+            $isKabarTerbaruActive = request()->routeIs('admin.berita.*') || request()->routeIs('admin.video.*') || request()->routeIs('admin.pesan.*');
         @endphp
 
         <div class="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest mb-4 px-4">Menu Utama</div>
@@ -56,7 +61,7 @@
             </a>
         @endforeach
 
-        {{-- Unified Accordion: Kabar Terbaru (Berita & Video) --}}
+        {{-- Unified Accordion: Kabar Terbaru (Berita, Video, Pesan) --}}
         <details class="group/dropdown" {{ $isKabarTerbaruActive ? 'open' : '' }}>
             <summary class="flex items-center justify-between gap-3.5 px-4 py-3.5 rounded-2xl text-[14px] font-semibold text-slate-500 hover:bg-slate-50 hover:text-slate-800 cursor-pointer list-none [&::-webkit-details-marker]:hidden select-none transition-all duration-300 relative {{ $isKabarTerbaruActive ? 'text-primary bg-blue-50/80 shadow-sm border border-blue-100/50' : '' }}">
                 <div class="flex items-center gap-3.5">
@@ -75,6 +80,9 @@
                 <a href="{{ route('admin.video.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-[13.5px] font-semibold transition-all duration-200 {{ request()->routeIs('admin.video.*') ? 'text-primary bg-blue-50/50 font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
                     Video
                 </a>
+                <a href="{{ route('admin.pesan.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-[13.5px] font-semibold transition-all duration-200 {{ request()->routeIs('admin.pesan.*') ? 'text-primary bg-blue-50/50 font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+                    Pesan Terbaru
+                </a>
             </div>
         </details>
 
@@ -82,6 +90,23 @@
         @foreach($bottomLinks as $link)
             @php
                 $active = request()->routeIs($link['route']) || request()->routeIs(str_replace('.index','',$link['route']).'.*');
+            @endphp
+            <a href="{{ route($link['route']) }}"
+               class="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-[14px] font-semibold transition-all duration-300 group relative overflow-hidden
+                      {{ $active ? 'text-primary bg-blue-50/80 shadow-sm border border-blue-100/50' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800' }}">
+                @if($active)
+                    <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-primary rounded-r-full"></div>
+                @endif
+                <i data-lucide="{{ $link['icon'] }}" class="w-5 h-5 transition-transform duration-300 group-hover:scale-110 {{ $active ? 'text-primary' : 'text-slate-400 group-hover:text-slate-500' }}"></i>
+                {{ $link['label'] }}
+            </a>
+        @endforeach
+
+        {{-- Settings Section --}}
+        <div class="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest mt-8 mb-4 px-4">Pengaturan & Admin</div>
+        @foreach($settingLinks as $link)
+            @php
+                $active = request()->routeIs($link['route']) || request()->routeIs(str_replace('.edit','',$link['route']).'.*') || request()->routeIs(str_replace('.index','',$link['route']).'.*');
             @endphp
             <a href="{{ route($link['route']) }}"
                class="flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-[14px] font-semibold transition-all duration-300 group relative overflow-hidden

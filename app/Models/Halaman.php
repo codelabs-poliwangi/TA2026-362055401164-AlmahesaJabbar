@@ -13,6 +13,7 @@ class Halaman extends Model
         'judul_halaman',
         'slug',
         'isi_konten',
+        'gambar',
         'created_by'
     ];
 

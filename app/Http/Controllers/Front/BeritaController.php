@@ -10,26 +10,32 @@ class BeritaController extends Controller
 {
     public function index()
     {
-        $beritaUtama = Berita::with('kategori')
-            ->where('status', 'published')
-            ->orderBy('tanggal_publish', 'desc')
-            ->first();
+        $search = request('search');
+        $categoryId = request('category');
 
-        $beritaLainnya = Berita::with('kategori')
+        $query = Berita::with('kategori')
             ->where('status', 'published')
-            ->orderBy('tanggal_publish', 'desc')
-            ->skip(1)->take(3)
-            ->get();
+            ->orderBy('tanggal_publish', 'desc');
 
-        $pengumuman = Berita::with('kategori')
-            ->where('status', 'published')
-            ->whereHas('kategori', fn($q) => $q->where('nama_kategori', 'Pengumuman'))
-            ->orderBy('tanggal_publish', 'desc')
-            ->first();
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('judul', 'like', "%{$search}%")
+                  ->orWhere('isi', 'like', "%{$search}%");
+            });
+        }
+
+        if ($categoryId) {
+            $query->where('kategori_id', $categoryId);
+        }
+
+        $allBerita = $query->get();
+
+        $beritaUtama = $allBerita->first();
+        $beritaLainnya = $allBerita->slice(1);
 
         $kategori = KategoriBerita::all();
 
-        return view('front.berita.index', compact('beritaUtama', 'beritaLainnya', 'pengumuman', 'kategori'));
+        return view('front.berita.index', compact('beritaUtama', 'beritaLainnya', 'kategori'));
     }
 
     public function show(string $slug)

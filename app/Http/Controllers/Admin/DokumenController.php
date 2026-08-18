@@ -36,7 +36,7 @@ class DokumenController extends Controller
         $request->validate([
             'judul'           => 'required|max:100',
             'deskripsi'       => 'nullable|max:255',
-            'file'            => 'required|mimes:pdf,doc,docx,xls,xlsx|max:5120',
+            'file'            => 'required|safe_file|mimes:pdf,doc,docx,xls,xlsx|max:5120',
             'kategori_id'     => 'required|exists:kategori_dokumen,id',
             'tanggal_upload'  => 'nullable|date',
             'status'          => 'required|in:draft,published',
@@ -61,7 +61,7 @@ class DokumenController extends Controller
         $request->validate([
             'judul'           => 'required|max:100',
             'deskripsi'       => 'nullable|max:255',
-            'file'            => 'nullable|mimes:pdf,doc,docx,xls,xlsx|max:5120',
+            'file'            => 'nullable|safe_file|mimes:pdf,doc,docx,xls,xlsx|max:5120',
             'kategori_id'     => 'required|exists:kategori_dokumen,id',
             'tanggal_upload'  => 'nullable|date',
             'status'          => 'required|in:draft,published',

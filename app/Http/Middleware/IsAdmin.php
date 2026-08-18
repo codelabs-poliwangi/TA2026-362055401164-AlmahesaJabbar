@@ -17,9 +17,16 @@ class IsAdmin
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::check() || Auth::user()->role !== 'admin') {
-            return redirect('/')->with('error', 'Akses ditolak.');
+            return redirect()->route('admin.login')->with('error', 'Akses ditolak. Silakan login terlebih dahulu.');
         }
 
-        return $next($request);
+        $response = $next($request);
+
+        // Prevent browser from caching admin dashboard pages (mitigate back-button exposure)
+        $response->headers->set('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate');
+        $response->headers->set('Pragma', 'no-cache');
+        $response->headers->set('Expires', 'Sun, 02 Jan 1990 00:00:00 GMT');
+
+        return $response;
     }
 }

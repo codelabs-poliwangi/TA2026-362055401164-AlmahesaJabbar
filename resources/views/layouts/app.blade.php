@@ -17,7 +17,7 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-white min-h-screen flex flex-col">
+<body class="bg-white min-h-screen flex flex-col overflow-x-hidden">
     
     {{-- Announcement Bar Ticker --}}
     <div class="bg-[#004795] text-white py-2 overflow-hidden border-b border-blue-900/10 text-[12.5px] font-sans font-semibold relative z-50">
@@ -27,7 +27,7 @@
                 <span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping"></span>
                 Pengumuman
             </span>
-            <div class="relative w-full overflow-hidden flex items-center">
+            <div class="relative w-full min-w-0 overflow-hidden flex items-center">
                 <div class="animate-marquee whitespace-nowrap hover-pause flex gap-20">
                     @if($globalAnnouncements && $globalAnnouncements->count() > 0)
                         {{-- First copy --}}
