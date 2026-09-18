@@ -68,19 +68,33 @@
             <div class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
                 <h3 class="font-display font-bold text-slate-900 mb-6 text-lg border-b border-slate-50 pb-4">Gambar Unggulan</h3>
                 <div class="space-y-4">
-                    <div class="aspect-video bg-slate-50 rounded-xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-slate-400 p-4 text-center group hover:border-primary transition-colors cursor-pointer relative overflow-hidden" id="preview-container">
+                    <div class="aspect-video bg-slate-50 rounded-xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-slate-400 p-4 text-center group hover:border-primary transition-all cursor-pointer relative overflow-hidden" id="preview-container">
                         <i data-lucide="image-plus" class="w-10 h-10 mb-2 group-hover:text-primary transition-colors"></i>
                         <p class="text-[10px] font-bold uppercase tracking-widest">Klik untuk pilih gambar</p>
-                        <p class="text-[9px] mt-1 italic">Format: JPG, PNG (Max 2MB)</p>
-                        <input type="file" name="gambar" id="gambar-input" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">
+                        <p class="text-[9px] mt-1 italic">Format: JPG, JPEG, PNG, WEBP (Max 2MB)</p>
+                        <input type="file" name="gambar" id="gambar-input" class="absolute inset-0 opacity-0 cursor-pointer z-10" accept="image/jpeg,image/png,image/jpg,image/webp">
                         <img id="preview-img" class="absolute inset-0 w-full h-full object-cover hidden">
                     </div>
+
+                    <!-- Progress Indicator Bar -->
+                    <div id="upload-progress-box" class="hidden p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5 transition-all">
+                        <div class="flex items-center justify-between text-xs font-bold text-slate-700">
+                            <span id="progress-status-text" class="flex items-center gap-1.5">
+                                Memproses file...
+                            </span>
+                            <span id="progress-percent" class="font-extrabold text-blue-600">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                            <div id="progress-bar" class="bg-blue-600 h-full rounded-full transition-all duration-100 w-0"></div>
+                        </div>
+                    </div>
+
                     @error('gambar') <p class="text-red-500 text-xs mt-2">{{ $message }}</p> @enderror
                 </div>
             </div>
 
             <div class="flex gap-4">
-                <button type="submit" class="flex-1 py-4 bg-primary text-white font-bold rounded-xl hover:bg-blue-800 transition shadow-xl shadow-primary/20 flex items-center justify-center gap-3">
+                <button type="submit" id="submit-btn" class="flex-1 py-4 bg-primary text-white font-bold rounded-xl hover:bg-blue-800 transition shadow-xl shadow-primary/20 flex items-center justify-center gap-3">
                     <i data-lucide="save" class="w-5 h-5"></i>
                     Simpan Berita
                 </button>
@@ -95,17 +109,79 @@
     const input = document.getElementById('gambar-input');
     const preview = document.getElementById('preview-img');
     const container = document.getElementById('preview-container');
+    const progressBox = document.getElementById('upload-progress-box');
+    const progressBar = document.getElementById('progress-bar');
+    const progressPercent = document.getElementById('progress-percent');
+    const progressStatus = document.getElementById('progress-status-text');
+    const submitBtn = document.getElementById('submit-btn');
 
     input.addEventListener('change', function() {
         const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-                preview.classList.remove('hidden');
+        if (!file) return;
+
+        if (!validateFile(file, {
+            type: 'image',
+            allowedExtensions: ['jpg', 'jpeg', 'png', 'webp'],
+            maxSizeMB: 2,
+            inputElement: this,
+            onReset: () => {
+                preview.src = '';
+                preview.classList.add('hidden');
+                resetFileUploadProgress({
+                    container,
+                    progressBox,
+                    progressBar,
+                    progressPercent,
+                    progressStatus,
+                    submitBtn
+                });
             }
-            reader.readAsDataURL(file);
+        })) {
+            return;
         }
+
+        // Open Image Cropper Modal
+        openImageCropper({
+            file: file,
+            aspectRatio: 16 / 9,
+            outputWidth: 1280,
+            outputHeight: 720,
+            frameLabel: '16:9 Landscape',
+            title: 'Sesuaikan Gambar Berita',
+            onCropped: (croppedFile, croppedDataUrl) => {
+                // Update file input with cropped file
+                const dt = new DataTransfer();
+                dt.items.add(croppedFile);
+                input.files = dt.files;
+
+                // Show preview
+                preview.src = croppedDataUrl;
+                preview.classList.remove('hidden');
+
+                // Simulate upload progress
+                simulateFileUploadProgress({
+                    container,
+                    progressBox,
+                    progressBar,
+                    progressPercent,
+                    progressStatus,
+                    submitBtn
+                });
+            },
+            onCancel: () => {
+                input.value = '';
+                preview.src = '';
+                preview.classList.add('hidden');
+                resetFileUploadProgress({
+                    container,
+                    progressBox,
+                    progressBar,
+                    progressPercent,
+                    progressStatus,
+                    submitBtn
+                });
+            }
+        });
     });
 </script>
 @endpush

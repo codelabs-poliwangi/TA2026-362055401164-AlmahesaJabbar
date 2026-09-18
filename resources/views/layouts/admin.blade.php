@@ -7,8 +7,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/logo/logo_banyuwangi.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('assets/img/logo/logo_banyuwangi.png') }}">
+    
+    <link rel="stylesheet" href="{{ asset('assets/css/cropper.min.css') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Local Assets (Self-Hosted) -->
+    <script src="{{ asset('assets/js/lucide.min.js') }}"></script>
+    <script src="{{ asset('assets/js/cropper.min.js') }}"></script>
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800 font-display antialiased selection:bg-primary/20 selection:text-primary">
 <div class="flex min-h-screen">
@@ -41,7 +49,17 @@
         </footer>
     </div>
 </div>
-<script>lucide.createIcons();</script>
+@include('admin.partials.modal-file-error')
+@include('admin.partials.modal-image-cropper')
+<script>
+    function renderLucideAdminIcons() {
+        if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+            lucide.createIcons();
+        }
+    }
+    document.addEventListener('DOMContentLoaded', renderLucideAdminIcons);
+    renderLucideAdminIcons();
+</script>
 @stack('scripts')
 </body>
 </html>

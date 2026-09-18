@@ -11,11 +11,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/logo/logo_banyuwangi.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('assets/img/logo/logo_banyuwangi.png') }}">
+    
     <!-- Scripts & Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    @stack('head')
 </head>
 <body class="bg-white min-h-screen flex flex-col overflow-x-hidden">
     
@@ -41,7 +43,7 @@
                         @endforeach
                         {{-- Second copy for seamless infinite scrolling --}}
                         @foreach($globalAnnouncements as $announcement)
-                            <a href="{{ $announcement->link ?? '#' }}" class="{{ $announcement->link ? 'hover:text-[#F9B115]' : 'cursor-default' }} transition-colors flex items-center gap-2" aria-hidden="true">
+                            <a href="{{ $announcement->link ?? '#' }}" class="{{ $announcement->link ? 'hover:text-[#F9B115]' : 'cursor-default' }} transition-colors flex items-center gap-2" aria-hidden="true" tabindex="-1">
                                 <span>{{ $announcement->judul }}</span>
                                 @if($announcement->link)
                                     <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 opacity-80 inline"></i>
@@ -51,7 +53,7 @@
                     @else
                         {{-- Fallback --}}
                         @for($i = 0; $i < 3; $i++)
-                            <a href="{{ $globalPengumuman ? route('publikasi.show', $globalPengumuman->slug) : route('publikasi') }}" class="hover:text-[#F9B115] transition-colors flex items-center gap-2">
+                            <a href="{{ $globalPengumuman ? route('publikasi.show', $globalPengumuman->slug) : route('publikasi') }}" class="hover:text-[#F9B115] transition-colors flex items-center gap-2" {{ $i > 0 ? 'aria-hidden="true" tabindex="-1"' : '' }}>
                                 <span>{{ $globalPengumuman ? $globalPengumuman->judul : 'Pengumuman Tahap Seleksi Paskibra Kabupaten Banyuwangi' }}</span>
                                 <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 opacity-80 inline"></i>
                             </a>
@@ -70,8 +72,16 @@
     
     @include('front.partials.footer')
     
+    <!-- Lucide Icons (100% Local / Self-Hosted) -->
+    <script src="{{ asset('assets/js/lucide.min.js') }}"></script>
     <script>
-        lucide.createIcons();
+        function renderLucideIcons() {
+            if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+                lucide.createIcons();
+            }
+        }
+        document.addEventListener('DOMContentLoaded', renderLucideIcons);
+        renderLucideIcons();
     </script>
     @stack('scripts')
 </body>

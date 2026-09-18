@@ -78,7 +78,7 @@
                 <a href="{{ route('profil.pimpinan') }}"
                     class="border border-slate-300 rounded-sm overflow-hidden hover:border-primary hover:shadow-md transition-all group">
                     <div class="aspect-video overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80"
+                        <img src="{{ asset('assets/img/profil/pimpinan.webp') }}"
                             alt="Pimpinan" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="px-4 py-3 border-t border-slate-200 bg-white">
@@ -90,7 +90,7 @@
                 <a href="{{ route('profil.struktur') }}"
                     class="border border-slate-300 rounded-sm overflow-hidden hover:border-primary hover:shadow-md transition-all group">
                     <div class="aspect-video overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80"
+                        <img src="{{ asset('assets/img/profil/struktur.webp') }}"
                             alt="Struktur Organisasi"
                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                     </div>
@@ -103,7 +103,7 @@
                 <a href="{{ route('profil.visi-misi') }}"
                     class="border border-slate-300 rounded-sm overflow-hidden hover:border-primary hover:shadow-md transition-all group">
                     <div class="aspect-video overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop&w=600&q=80"
+                        <img src="{{ asset('assets/img/profil/visi-misi.webp') }}"
                             alt="Visi dan Misi"
                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                     </div>
@@ -116,7 +116,7 @@
                 <a href="{{ route('profil.tupoksi') }}"
                     class="border border-slate-300 rounded-sm overflow-hidden hover:border-primary hover:shadow-md transition-all group">
                     <div class="aspect-video overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=600&q=80"
+                        <img src="{{ asset('assets/img/profil/tupoksi.webp') }}"
                             alt="Tugas Pokok dan Fungsi"
                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                     </div>

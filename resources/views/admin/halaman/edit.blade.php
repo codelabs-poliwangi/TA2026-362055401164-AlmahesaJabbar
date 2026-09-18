@@ -32,20 +32,34 @@
                         <label class="block text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-1">Gambar Struktur Organisasi <span class="text-red-500">*</span></label>
                         <span class="text-[10px] text-slate-400 block mb-3 font-sans font-medium">Bagan visual struktur organisasi instansi.</span>
                         
-                        <div class="aspect-[4/3] bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-slate-400 p-4 text-center group hover:border-primary transition-colors cursor-pointer relative overflow-hidden" id="preview-container">
+                        <div class="aspect-[4/3] bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-slate-400 p-4 text-center group hover:border-primary transition-all cursor-pointer relative overflow-hidden" id="preview-container">
                             @if($halaman->gambar)
                                 <i data-lucide="image" class="w-12 h-12 mb-2 group-hover:text-primary transition-colors hidden"></i>
                                 <p class="text-[10px] font-bold uppercase tracking-widest hidden">Klik untuk ganti gambar</p>
-                                <input type="file" name="gambar" id="gambar-input" class="absolute inset-0 opacity-0 cursor-pointer z-10" accept="image/*">
+                                <input type="file" name="gambar" id="gambar-input" class="absolute inset-0 opacity-0 cursor-pointer z-10" accept="image/jpeg,image/png,image/jpg,image/webp">
                                 <img id="preview-img" src="{{ asset('storage/' . $halaman->gambar) }}" class="absolute inset-0 w-full h-full object-contain bg-slate-100">
                             @else
                                 <i data-lucide="image" class="w-12 h-12 mb-2 group-hover:text-primary transition-colors"></i>
                                 <p class="text-[10px] font-bold uppercase tracking-widest">Klik untuk pilih gambar</p>
                                 <p class="text-[9px] mt-1 italic">Format: JPG, JPEG, PNG, WEBP (Max 2MB)</p>
-                                <input type="file" name="gambar" id="gambar-input" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">
+                                <input type="file" name="gambar" id="gambar-input" class="absolute inset-0 opacity-0 cursor-pointer z-10" accept="image/jpeg,image/png,image/jpg,image/webp">
                                 <img id="preview-img" class="absolute inset-0 w-full h-full object-contain bg-slate-100 hidden">
                             @endif
                         </div>
+
+                        <!-- Progress Indicator Bar -->
+                        <div id="upload-progress-box" class="hidden p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5 transition-all">
+                            <div class="flex items-center justify-between text-xs font-bold text-slate-700">
+                                <span id="progress-status-text" class="flex items-center gap-1.5">
+                                    Memproses file...
+                                </span>
+                                <span id="progress-percent" class="font-extrabold text-blue-600">0%</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                                <div id="progress-bar" class="bg-blue-600 h-full rounded-full transition-all duration-100 w-0"></div>
+                            </div>
+                        </div>
+
                         @error('gambar') <p class="text-red-500 text-xs mt-2">{{ $message }}</p> @enderror
                     </div>
                 </div>
@@ -72,7 +86,7 @@
             @endif
 
             <div class="flex gap-4 pt-4 border-t border-slate-50">
-                <button type="submit" class="flex-1 py-4 bg-primary text-white font-bold rounded-xl hover:bg-blue-800 transition shadow-xl shadow-primary/20 flex items-center justify-center gap-3">
+                <button type="submit" id="submit-btn" class="flex-1 py-4 bg-primary text-white font-bold rounded-xl hover:bg-blue-800 transition shadow-xl shadow-primary/20 flex items-center justify-center gap-3">
                     <i data-lucide="save" class="w-5 h-5"></i>
                     Perbarui Halaman
                 </button>
@@ -90,20 +104,99 @@
         const input = document.getElementById('gambar-input');
         const preview = document.getElementById('preview-img');
         const container = document.getElementById('preview-container');
+        const progressBox = document.getElementById('upload-progress-box');
+        const progressBar = document.getElementById('progress-bar');
+        const progressPercent = document.getElementById('progress-percent');
+        const progressStatus = document.getElementById('progress-status-text');
+        const submitBtn = document.getElementById('submit-btn');
+        const hadOriginalGambar = @json((bool)$halaman->gambar);
+        const originalGambarSrc = hadOriginalGambar ? @json(asset('storage/' . $halaman->gambar)) : '';
 
         if (input && preview && container) {
             input.addEventListener('change', function() {
                 const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        preview.src = e.target.result;
+                if (!file) return;
+
+                if (!validateFile(file, {
+                    type: 'image',
+                    allowedExtensions: ['jpg', 'jpeg', 'png', 'webp'],
+                    maxSizeMB: 2,
+                    inputElement: this,
+                    onReset: () => {
+                        if (hadOriginalGambar) {
+                            preview.src = originalGambarSrc;
+                            preview.classList.remove('hidden');
+                            const icons = container.querySelectorAll('i, p');
+                            icons.forEach(el => el.classList.add('hidden'));
+                        } else {
+                            preview.src = '';
+                            preview.classList.add('hidden');
+                            const icons = container.querySelectorAll('i, p');
+                            icons.forEach(el => el.classList.remove('hidden'));
+                        }
+                        resetFileUploadProgress({
+                            container,
+                            progressBox,
+                            progressBar,
+                            progressPercent,
+                            progressStatus,
+                            submitBtn
+                        });
+                    }
+                })) {
+                    return;
+                }
+
+                // Open Image Cropper Modal (4:3 default for organization chart)
+                openImageCropper({
+                    file: file,
+                    aspectRatio: 4 / 3,
+                    outputWidth: 1200,
+                    outputHeight: 900,
+                    frameLabel: '4:3 Bagan Struktur Organisasi',
+                    title: 'Sesuaikan Bagan Struktur Organisasi',
+                    onCropped: (croppedFile, croppedDataUrl) => {
+                        const dt = new DataTransfer();
+                        dt.items.add(croppedFile);
+                        input.files = dt.files;
+
+                        preview.src = croppedDataUrl;
                         preview.classList.remove('hidden');
                         const icons = container.querySelectorAll('i, p');
                         icons.forEach(el => el.classList.add('hidden'));
+
+                        simulateFileUploadProgress({
+                            container,
+                            progressBox,
+                            progressBar,
+                            progressPercent,
+                            progressStatus,
+                            submitBtn
+                        });
+                    },
+                    onCancel: () => {
+                        input.value = '';
+                        if (hadOriginalGambar) {
+                            preview.src = originalGambarSrc;
+                            preview.classList.remove('hidden');
+                            const icons = container.querySelectorAll('i, p');
+                            icons.forEach(el => el.classList.add('hidden'));
+                        } else {
+                            preview.src = '';
+                            preview.classList.add('hidden');
+                            const icons = container.querySelectorAll('i, p');
+                            icons.forEach(el => el.classList.remove('hidden'));
+                        }
+                        resetFileUploadProgress({
+                            container,
+                            progressBox,
+                            progressBar,
+                            progressPercent,
+                            progressStatus,
+                            submitBtn
+                        });
                     }
-                    reader.readAsDataURL(file);
-                }
+                });
             });
         }
     });

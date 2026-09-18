@@ -2,6 +2,10 @@
 
 @section('title', 'Beranda - Bakesbangpol Kabupaten Banyuwangi')
 
+@push('head')
+    <link rel="preload" as="image" href="{{ asset('assets/img/hero-section.webp') }}" type="image/webp" fetchpriority="high">
+@endpush
+
 @section('content')
 
     {{-- =============================================
@@ -31,29 +35,53 @@
                         
                         {{-- Slides --}}
                         <div id="hero-slider" class="w-full h-full relative">
-                            <!-- Slide 1 -->
+                            <!-- Slide 1 (LCP Image) -->
                             <div class="slide absolute inset-0 opacity-100 transition-opacity duration-1000 ease-in-out">
-                                <img src="{{ asset('assets/img/hero-section.png') }}" alt="Bakesbangpol Banyuwangi 1"
-                                    class="w-full h-full object-cover">
+                                <picture>
+                                    <source srcset="{{ asset('assets/img/hero-section.webp') }}" type="image/webp">
+                                    <img src="{{ asset('assets/img/hero-section.png') }}" alt="Bakesbangpol Banyuwangi 1"
+                                        fetchpriority="high"
+                                        loading="eager"
+                                        decoding="async"
+                                        width="800"
+                                        height="800"
+                                        class="w-full h-full object-cover">
+                                </picture>
                             </div>
                             <!-- Slide 2 -->
                             <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000 ease-in-out">
-                                <img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80" alt="Bakesbangpol Banyuwangi 2"
+                                <img src="{{ asset('assets/img/hero/hero-2.webp') }}" alt="Bakesbangpol Banyuwangi 2"
+                                    loading="lazy"
+                                    decoding="async"
+                                    width="600"
+                                    height="600"
                                     class="w-full h-full object-cover">
                             </div>
                             <!-- Slide 3 -->
                             <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000 ease-in-out">
-                                <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80" alt="Bakesbangpol Banyuwangi 3"
+                                <img src="{{ asset('assets/img/hero/hero-3.webp') }}" alt="Bakesbangpol Banyuwangi 3"
+                                    loading="lazy"
+                                    decoding="async"
+                                    width="600"
+                                    height="600"
                                     class="w-full h-full object-cover">
                             </div>
                             <!-- Slide 4 -->
                             <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000 ease-in-out">
-                                <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop&w=800&q=80" alt="Bakesbangpol Banyuwangi 4"
+                                <img src="{{ asset('assets/img/hero/hero-4.webp') }}" alt="Bakesbangpol Banyuwangi 4"
+                                    loading="lazy"
+                                    decoding="async"
+                                    width="600"
+                                    height="600"
                                     class="w-full h-full object-cover">
                             </div>
                             <!-- Slide 5 -->
                             <div class="slide absolute inset-0 opacity-0 transition-opacity duration-1000 ease-in-out">
-                                <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=800&q=80" alt="Bakesbangpol Banyuwangi 5"
+                                <img src="{{ asset('assets/img/hero/hero-5.webp') }}" alt="Bakesbangpol Banyuwangi 5"
+                                    loading="lazy"
+                                    decoding="async"
+                                    width="600"
+                                    height="600"
                                     class="w-full h-full object-cover">
                             </div>
                         </div>
@@ -192,6 +220,10 @@
                             <div class="w-full bg-slate-200 rounded overflow-hidden" style="aspect-ratio:4/3;">
                                 @if ($berita->gambar)
                                     <img src="{{ asset('storage/' . $berita->gambar) }}" alt="{{ $berita->judul }}"
+                                        loading="lazy"
+                                        decoding="async"
+                                        width="600"
+                                        height="450"
                                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                                 @else
                                     <div class="w-full h-full flex items-center justify-center bg-slate-200">
@@ -229,6 +261,8 @@
                         @if($videos && $videos->count() > 0)
                             @foreach($videos as $index => $video)
                                 <a href="{{ $video->link_video }}" target="_blank"
+                                   tabindex="{{ $index === 0 ? '0' : '-1' }}"
+                                   aria-hidden="{{ $index === 0 ? 'false' : 'true' }}"
                                    class="video-slide absolute inset-0 transition-opacity duration-1000 ease-in-out {{ $index === 0 ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none' }}">
                                     @if($video->gambar_cover)
                                         <img src="{{ asset('storage/' . $video->gambar_cover) }}" alt="{{ $video->judul }}"
@@ -250,6 +284,8 @@
                         @else
                             {{-- Fallback --}}
                             <a href="https://www.instagram.com/reel/DY6cRvDSGXa/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank"
+                               tabindex="0"
+                               aria-hidden="false"
                                class="video-slide absolute inset-0 opacity-100 z-10 pointer-events-auto">
                                 <img src="{{ asset('assets/img/idul-adha.jpeg') }}" alt="Video Kegiatan Bakesbangpol"
                                      class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 opacity-80 hover:opacity-100">
@@ -265,9 +301,11 @@
 
                         {{-- Dots indicator --}}
                         @if($videos && $videos->count() > 1)
-                            <div class="absolute bottom-4 right-5 z-20 flex gap-1.5 bg-slate-950/40 backdrop-blur-sm px-2.5 py-1.5 rounded-full">
+                            <div class="absolute bottom-4 right-5 z-20 flex gap-1 bg-slate-950/50 backdrop-blur-sm px-2 py-1 rounded-full items-center">
                                 @foreach($videos as $index => $video)
-                                    <button class="video-dot w-2 h-2 rounded-full transition-all duration-300 {{ $index === 0 ? 'bg-[#F9B115] w-4' : 'bg-white/60 hover:bg-white' }}" onclick="event.preventDefault(); event.stopPropagation(); showVideoSlide({{ $index }})"></button>
+                                    <button type="button" aria-label="Lihat video {{ $index + 1 }}" class="video-dot w-7 h-7 inline-flex items-center justify-center focus:outline-none" onclick="event.preventDefault(); event.stopPropagation(); showVideoSlide({{ $index }})">
+                                        <span class="video-dot-pill block h-2 rounded-full transition-all duration-300 {{ $index === 0 ? 'bg-[#F9B115] w-4' : 'bg-white/60 hover:bg-white w-2' }}"></span>
+                                    </button>
                                 @endforeach
                             </div>
                         @endif
@@ -408,20 +446,25 @@
                 if (i === currentVideoSlide) {
                     slide.classList.remove('opacity-0', 'z-0', 'pointer-events-none');
                     slide.classList.add('opacity-100', 'z-10', 'pointer-events-auto');
+                    slide.setAttribute('tabindex', '0');
+                    slide.setAttribute('aria-hidden', 'false');
                 } else {
                     slide.classList.remove('opacity-100', 'z-10', 'pointer-events-auto');
                     slide.classList.add('opacity-0', 'z-0', 'pointer-events-none');
+                    slide.setAttribute('tabindex', '-1');
+                    slide.setAttribute('aria-hidden', 'true');
                 }
             });
 
-            if (videoDots.length > 0) {
-                videoDots.forEach((dot, i) => {
+            const videoPills = document.querySelectorAll('#video-slider-container .video-dot-pill');
+            if (videoPills.length > 0) {
+                videoPills.forEach((pill, i) => {
                     if (i === currentVideoSlide) {
-                        dot.classList.remove('bg-white/60', 'w-2');
-                        dot.classList.add('bg-[#F9B115]', 'w-4');
+                        pill.classList.remove('bg-white/60', 'hover:bg-white', 'w-2');
+                        pill.classList.add('bg-[#F9B115]', 'w-4');
                     } else {
-                        dot.classList.remove('bg-[#F9B115]', 'w-4');
-                        dot.classList.add('bg-white/60', 'w-2');
+                        pill.classList.remove('bg-[#F9B115]', 'w-4');
+                        pill.classList.add('bg-white/60', 'hover:bg-white', 'w-2');
                     }
                 });
             }

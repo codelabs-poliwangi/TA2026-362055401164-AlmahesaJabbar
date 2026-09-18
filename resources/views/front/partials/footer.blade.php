@@ -5,8 +5,14 @@
             {{-- Col 1: Brand & Socials --}}
             <div class="space-y-6">
                 <a href="{{ route('beranda') }}" class="flex items-center gap-3 group">
-                    <img src="{{ asset('assets/img/logo/logo_banyuwangi.png') }}" alt="Logo Kabupaten Banyuwangi"
-                        class="w-8 h-10 object-contain">
+                    <picture>
+                        <source srcset="{{ asset('assets/img/logo/logo_banyuwangi.webp') }}" type="image/webp">
+                        <img src="{{ asset('assets/img/logo/logo_banyuwangi.png') }}" alt="Logo Kabupaten Banyuwangi"
+                            width="32" height="40"
+                            loading="lazy"
+                            decoding="async"
+                            class="w-8 h-10 object-contain">
+                    </picture>
                     <div class="flex flex-col leading-tight">
                         <span
                             class="font-display font-black text-[13px] tracking-wider text-white leading-none">BAKESBANGPOL</span>
@@ -49,9 +55,9 @@
 
             {{-- Col 2: Tautan Cepat --}}
             <div>
-                <h4
+                <h3
                     class="font-display font-black text-white text-[13px] tracking-wider uppercase mb-6 pb-2 border-b border-slate-800 inline-block">
-                    Tautan Cepat</h4>
+                    Tautan Cepat</h3>
                 <ul class="space-y-3 text-[12.5px] font-sans font-medium">
                     <li><a href="{{ route('beranda') }}" class="hover:text-white transition">Beranda</a></li>
                     <li><a href="{{ route('profil') }}" class="hover:text-white transition">Profil</a></li>
@@ -64,9 +70,9 @@
 
             {{-- Col 3: Layanan --}}
             <div>
-                <h4
+                <h3
                     class="font-display font-black text-white text-[13px] tracking-wider uppercase mb-6 pb-2 border-b border-slate-800 inline-block">
-                    Layanan</h4>
+                    Layanan</h3>
                 <ul class="space-y-3 text-[12.5px] font-sans font-medium">
                     <li><a href="#" class="hover:text-white transition">Permohonan Informasi</a></li>
                     <li><a href="#" class="hover:text-white transition">Pengaduan Masyarakat</a></li>
@@ -77,9 +83,9 @@
 
             {{-- Col 4: Kontak Kami --}}
             <div class="space-y-4">
-                <h4
+                <h3
                     class="font-display font-black text-white text-[13px] tracking-wider uppercase mb-6 pb-2 border-b border-slate-800 inline-block">
-                    Kontak Kami</h4>
+                    Kontak Kami</h3>
                 <ul class="space-y-4 text-[12.5px] font-sans font-medium">
                     <li class="flex items-start gap-3">
                         <i data-lucide="map-pin" class="w-4 h-4 text-slate-400 mt-1 flex-shrink-0"></i>

@@ -21,7 +21,7 @@
                 <label class="block text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-3">Password</label>
                 <div class="relative">
                     <input type="password" id="password" name="password" required class="w-full px-6 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm transition-all shadow-sm">
-                    <button type="button" onclick="togglePasswordVisibility('password', 'password_icon')" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none">
+                    <button type="button" onclick="togglePasswordVisibility('password', 'password_icon')" aria-label="Tampilkan atau sembunyikan kata sandi" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none">
                         <i id="password_icon" data-lucide="eye" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -35,7 +35,7 @@
                 <label class="block text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-3">Konfirmasi Password</label>
                 <div class="relative">
                     <input type="password" id="password_confirmation" name="password_confirmation" required class="w-full px-6 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm transition-all shadow-sm">
-                    <button type="button" onclick="togglePasswordVisibility('password_confirmation', 'password_confirmation_icon')" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none">
+                    <button type="button" onclick="togglePasswordVisibility('password_confirmation', 'password_confirmation_icon')" aria-label="Tampilkan atau sembunyikan konfirmasi kata sandi" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none">
                         <i id="password_confirmation_icon" data-lucide="eye" class="w-5 h-5"></i>
                     </button>
                 </div>

@@ -6,9 +6,14 @@
     <title>Login Admin - Bakesbangpol Banyuwangi</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/logo/logo_banyuwangi.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('assets/img/logo/logo_banyuwangi.png') }}">
+    
+    <script src="{{ asset('assets/js/lucide.min.js') }}"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="bg-slate-50 min-h-screen flex flex-col font-sans antialiased selection:bg-primary/20 selection:text-primary">
 
@@ -71,7 +76,7 @@
                             <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-primary transition-colors"></i>
                             <input type="password" id="password" name="password" required placeholder="••••••••"
                                    class="w-full pl-11 pr-12 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-[14px] font-medium placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all duration-200">
-                            <button type="button" onclick="togglePasswordVisibility('password', 'password_icon')" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none z-10">
+                            <button type="button" onclick="togglePasswordVisibility('password', 'password_icon')" aria-label="Tampilkan atau sembunyikan kata sandi" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none z-10">
                                 <i id="password_icon" data-lucide="eye" class="w-5 h-5"></i>
                             </button>
                         </div>
@@ -100,7 +105,13 @@
     </footer>
 
     <script>
-        lucide.createIcons();
+        function renderLoginIcons() {
+            if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+                lucide.createIcons();
+            }
+        }
+        document.addEventListener('DOMContentLoaded', renderLoginIcons);
+        renderLoginIcons();
 
         function togglePasswordVisibility(inputId, iconId) {
             const input = document.getElementById(inputId);
@@ -115,7 +126,9 @@
             }
             
             // Re-initialize Lucide icons for the updated icon element
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+                lucide.createIcons();
+            }
         }
     </script>
 </body>

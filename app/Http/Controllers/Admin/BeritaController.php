@@ -38,7 +38,7 @@ class BeritaController extends Controller
             'judul'           => 'required|max:100',
             'isi'             => 'required',
             'kategori_id'     => 'required|exists:kategori_berita,id',
-            'gambar'          => 'nullable|safe_image|image|max:2048',
+            'gambar'          => 'nullable|safe_image|image|mimes:jpeg,png,jpg,webp|max:2048',
             'tanggal_publish' => 'nullable|date',
             'status'          => 'required|in:draft,published',
         ]);
@@ -68,7 +68,7 @@ class BeritaController extends Controller
             'judul'           => 'required|max:100',
             'isi'             => 'required',
             'kategori_id'     => 'required|exists:kategori_berita,id',
-            'gambar'          => 'nullable|safe_image|image|max:2048',
+            'gambar'          => 'nullable|safe_image|image|mimes:jpeg,png,jpg,webp|max:2048',
             'tanggal_publish' => 'nullable|date',
             'status'          => 'required|in:draft,published',
         ]);

@@ -3,8 +3,12 @@
         <div class="flex justify-between h-18 items-center">
             {{-- Logo Shield & Text --}}
             <a href="{{ route('beranda') }}" class="flex items-center gap-3 group">
-                <img src="{{ asset('assets/img/logo/logo_banyuwangi.png') }}" alt="Logo Kabupaten Banyuwangi"
-                    class="w-9 h-11 object-contain transition-transform duration-300 group-hover:scale-105">
+                <picture>
+                    <source srcset="{{ asset('assets/img/logo/logo_banyuwangi.webp') }}" type="image/webp">
+                    <img src="{{ asset('assets/img/logo/logo_banyuwangi.png') }}" alt="Logo Kabupaten Banyuwangi"
+                        width="36" height="44"
+                        class="w-9 h-11 object-contain transition-transform duration-300 group-hover:scale-105">
+                </picture>
                 <div class="flex flex-col leading-tight">
                     <span
                         class="font-display font-black text-[14px] tracking-wider text-slate-900 leading-none">BAKESBANGPOL</span>
@@ -111,13 +115,13 @@
                     <input type="text" name="search" value="{{ request('search') }}"
                         placeholder="Cari informasi..."
                         class="text-[12px] bg-slate-50 border border-slate-200 rounded-full px-5 py-2.5 pr-12 text-slate-700 placeholder-slate-400 focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all w-52 outline-none">
-                    <button type="submit"
+                    <button type="submit" aria-label="Cari informasi"
                         class="absolute right-0 top-0 bottom-0 bg-[#0b2447] hover:bg-slate-800 text-white rounded-full px-3.5 flex items-center justify-center transition-colors">
                         <i data-lucide="search" class="w-3.5 h-3.5"></i>
                     </button>
                 </form>
                 {{-- Mobile menu button --}}
-                <button id="mobile-menu-button" onclick="toggleMobileMenu()" class="lg:hidden p-2 text-slate-600 hover:text-slate-900 transition-colors focus:outline-none">
+                <button id="mobile-menu-button" onclick="toggleMobileMenu()" aria-label="Buka menu navigasi" class="lg:hidden p-2 text-slate-600 hover:text-slate-900 transition-colors focus:outline-none">
                     <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
                     <i data-lucide="x" id="close-icon" class="w-6 h-6 hidden"></i>
                 </button>
@@ -132,7 +136,7 @@
             <input type="text" name="search" value="{{ request('search') }}"
                 placeholder="Cari informasi..."
                 class="text-[14px] bg-slate-50 border border-slate-200 rounded-xl px-5 py-3 pr-12 text-slate-700 placeholder-slate-400 focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all w-full outline-none">
-            <button type="submit"
+            <button type="submit" aria-label="Cari informasi"
                 class="absolute right-0 top-0 bottom-0 bg-[#0b2447] hover:bg-slate-800 text-white rounded-xl px-4 flex items-center justify-center transition-colors">
                 <i data-lucide="search" class="w-4 h-4"></i>
             </button>
